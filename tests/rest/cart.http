@@ -1,0 +1,135 @@
+###
+# @name adminData
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "Test321#4"
+}
+
+###
+# @name allUsers
+@accesstoken = {{ adminData.response.body.accessToken }}
+GET http://localhost:8080/user/find
+token: Bearer {{ accesstoken }}
+
+###
+# @name getWomenProduct
+GET http://localhost:8080/product/find?category=women
+
+###
+# @name getManProduct
+GET http://localhost:8080/product/find?category=man
+
+###
+# @name addCartUser1
+@token = {{adminData.response.body.accessToken }}
+@user1Id = {{ allUsers.response.body.$[0]._id }}
+@product1Id = {{ getWomenProduct.response.body.$[0]._id }}
+POST http://localhost:8080/cart/new
+Content-Type: application/json
+token: Bearer {{ token }}
+
+{
+    "userId": "{{user1Id}}",
+    "products": [
+        {
+            "productId": "{{product1Id}}",
+            "quantity": 2
+        }
+    ]
+}
+
+###
+# @name addCartUser2
+@token = {{adminData.response.body.accessToken }}
+@user2Id = {{ allUsers.response.body.$[1]._id }}
+@product2Id = {{ getManProduct.response.body.$[0]._id }}
+POST http://localhost:8080/cart/new
+Content-Type: application/json
+token: Bearer {{ token }}
+
+{
+    "userId": "{{user2Id}}",
+    "products": [
+        {
+            "productId": "{{product2Id}}",
+            "quantity": 1
+        }
+    ]
+}
+
+###
+# @name updateCartUser2
+@token = {{adminData.response.body.accessToken }}
+@cart2id = {{ addCartUser2.response.body._id }}
+@product1 = {{ getManProduct.response.body.$[0]._id }}
+@product2 = {{ getWomenProduct.response.body.$[0]._id }}
+PUT http://localhost:8080/cart/{{cart2id}}
+Content-Type: application/json
+token: Bearer {{ token }}
+
+{
+    "userId": "{{user2Id}}",
+    "products": [
+        {
+            "productId": "{{product1}}",
+            "quantity": 1
+        },
+        {
+            "productId": "{{product2}}",
+            "quantity": 2
+        }
+    ]
+}
+
+###
+# @name findCartById
+@cart1id = {{ addCartUser1.response.body._id }}
+@token = {{adminData.response.body.accessToken }}
+GET http://localhost:8080/cart/find/{{cart1id}}
+token: Bearer {{ token }}
+
+
+###
+# @name getAllCartsByLatest
+@token = {{adminData.response.body.accessToken }}
+GET http://localhost:8080/cart/find?latest=true
+token: Bearer {{ token }}
+
+###
+# @name getAllCartsByUserId
+GET http://localhost:8080/cart/find?userId={{user1Id}}
+token: Bearer {{ token }}
+
+###
+# @name getAllCartsByProducts
+@productId = {{ addCartUser1.response.body.products.$[0].productId }}
+GET http://localhost:8080/cart/find?products={{productId}}
+token: Bearer {{ token }}
+
+###
+# @name getAllCarts
+GET http://localhost:8080/cart/find
+token: Bearer {{ token }}
+
+###
+# @name findNewProductsPerMonth
+@adminaccesstoken = {{ adminData.response.body.accessToken }}
+GET http://localhost:8080/cart/newCartsPerMonth
+Content-Type: application/json
+token: Bearer {{ adminaccesstoken }}
+
+###
+# @name cartDelete
+@id = {{ addCartUser1.response.body._id }}
+@adminaccesstoken = {{ adminData.response.body.accessToken }}
+DELETE  http://localhost:8080/cart/{{id}}
+token: Bearer {{ adminaccesstoken}}
+
+###
+# @name cartDeleteAll
+@adminaccesstoken = {{ adminData.response.body.accessToken }}
+DELETE  http://localhost:8080/cart/all
+token: Bearer {{ adminaccesstoken}}

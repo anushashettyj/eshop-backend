@@ -1,0 +1,86 @@
+GET http://localhost:8080
+
+###
+GET http://localhost:8080/
+
+###
+GET http://localhost:8080/user/test
+
+###
+# @name userRegister
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "username": "ashetty2",
+    "email": "ashetty+2@test.com",
+    "password": "ashettypwd2"
+}
+
+###
+# @name userLogin
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "username": "ashetty1",
+    "password": "ashettypwd"
+}
+
+###
+# @name notAuthenticated
+PUT http://localhost:8080/user/640b9b0adcbee8921f739b64
+content-type: application/json
+
+{
+    "isAdmin": true
+}
+
+###
+# @name invalidUserToken
+@id = {{ userLogin.response.body._id }}
+PUT http://localhost:8080/user/{{id}}
+content-type: application/json
+token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MGI5YjBhZGNiZWU4OTIxZjczOWI2NCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Nzg0OTkxNTgsImV
+
+{
+    "username": "ashetty1"
+}
+
+
+###
+# @name userUpdate
+@accesstoken = {{ userLogin.response.body.accessToken }}
+@id = {{ userLogin.response.body._id }}
+PUT http://localhost:8080/user/{{id}}
+content-type: application/json
+token: Bearer {{ accesstoken}}
+
+{
+    "isAdmin": true
+}
+
+###
+# @name findAllUsers
+@accesstoken = {{ userLogin.response.body.accessToken }}
+GET http://localhost:8080/user/find
+token: Bearer {{ accesstoken }}
+
+###
+# @name findAlllatest5Users
+@accesstoken = {{ userLogin.response.body.accessToken }}
+GET http://localhost:8080/user/find?latest=true&limit=5
+token: Bearer {{ accesstoken }}
+
+###
+# @name userDelete
+@id = {{ userLogin.response.body._id }}
+@accesstoken = {{ userLogin.response.body.accessToken }}
+DELETE  http://localhost:8080/user/{{id}}
+Content-Type: application/json
+token: Bearer {{ accesstoken }}
+
+{
+    "username": "admin",
+    "password": "Test321#4"
+}

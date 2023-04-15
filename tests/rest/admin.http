@@ -1,0 +1,52 @@
+###
+# @name adminRegister
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "email": "admin@test.com",
+    "password": "Test321#4",
+    "isAdmin": true
+}
+
+###
+# @name adminLogin
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "Test321#4"
+}
+
+###
+# @name adminDelete
+@id = {{ adminLogin.response.body._id }}
+@adminaccesstoken = {{ adminLogin.response.body.accessToken }}
+DELETE  http://localhost:8080/user/{{id}}
+Content-Type: application/json
+token: Bearer {{ adminaccesstoken}}
+
+
+###
+# @name findUserById
+@id = {{ adminLogin.response.body._id }}
+@adminaccesstoken = {{ adminLogin.response.body.accessToken }}
+GET http://localhost:8080/user/find/{{id}}
+Content-Type: application/json
+token: Bearer {{ adminaccesstoken }}
+
+###
+# @name findAllUsers
+@adminaccesstoken = {{ adminLogin.response.body.accessToken }}
+GET http://localhost:8080/user/find
+Content-Type: application/json
+token: Bearer {{ adminaccesstoken }}
+
+###
+# @name findNewUsersPerMonth
+@adminaccesstoken = {{ adminLogin.response.body.accessToken }}
+GET http://localhost:8080/user/newUsersPerMonth
+Content-Type: application/json
+token: Bearer {{ adminaccesstoken }}

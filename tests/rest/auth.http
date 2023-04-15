@@ -1,0 +1,51 @@
+###
+# @name userRegister
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "username": "ashetty1",
+    "email": "ashetty+1@test.com",
+    "password": "ashettypwd"
+}
+
+###
+# @name usernameExists
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "username": "ashetty1",
+    "email": "ashetty+2@test.com",
+    "password": "ashettypwd"
+}
+
+###
+# @name validLogin
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "username": "ashetty1",
+    "password": "ashettypwd"
+}
+
+###
+# @name wrongUsername
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "username": "wrongusername",
+    "password": "ashettypwd"
+}
+
+###
+# @name wrongPassword
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "username": "ashetty1",
+    "password": "wrongpwd"
+}

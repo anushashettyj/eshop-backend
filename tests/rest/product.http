@@ -1,0 +1,81 @@
+###
+# @name adminData
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "Test321#4"
+}
+
+###
+# @name addProduct
+@token = {{adminData.response.body.accessToken }}
+POST http://localhost:8080/product/new
+Content-Type: application/json
+token: Bearer {{ token }}
+
+{
+    "title": "Track Pants",
+    "desc": "Pair of track pants",
+    "img": "test",
+    "categories": ["sportswear", "man", "women"],
+    "size": ["XS","S","M","L"],
+    "color": ["blue","black","grey"],
+    "price": 45,
+    "inStock": true
+}
+
+###
+# @name updateProduct
+@id = {{ getAllProducts.response.body.$[0]._id }}
+@token = {{adminData.response.body.accessToken }}
+PUT http://localhost:8080/product/{{id}}
+Content-Type: application/json
+token: Bearer {{ token }}
+
+{
+    "title": "Puma Tshirt Yellow Women",
+    "desc": "Yellow Puma Tshirt Women",
+    "img": "../assets/product/product2.jpg",
+    "categories": ["tshirt", "women"],
+    "size": ["XS","S","M","L"],
+    "color": ["blue","grey","green"],
+    "price": 35,
+    "inStock": true
+}
+
+###
+# @name getAllProducts
+GET http://localhost:8080/product/find?latest=true
+
+###
+# @name getAllProductsByCategoryMan
+GET http://localhost:8080/product/find?category=man
+
+###
+# @name getAllProductsByCategoryWomen
+GET http://localhost:8080/product/find?category=women
+
+###
+# @name getAllProductsByLatest
+GET http://localhost:8080/product/find
+
+###
+# @name findProdById
+@id = {{ getAllProducts.response.body.$[0]._id }}
+GET http://localhost:8080/product/find/{{id}}
+
+###
+# @name productDelete
+@id = {{ getAllProducts.response.body.$[0]._id }}
+@adminaccesstoken = {{ adminData.response.body.accessToken }}
+DELETE  http://localhost:8080/product/{{id}}
+token: Bearer {{ adminaccesstoken}}
+
+###
+# @name findNewProductsPerMonth
+@adminaccesstoken = {{ adminData.response.body.accessToken }}
+GET http://localhost:8080/product/newProductsPerMonth
+Content-Type: application/json
+token: Bearer {{ adminaccesstoken }}
