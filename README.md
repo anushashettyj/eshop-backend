@@ -42,6 +42,8 @@ Install and set up this app as given below.
    ```js
    npm run dev
    ```
+   * Runs the app in the development mode
+   * Open [http://localhost:8080](http://localhost:8080) and make REST API calls
 
 
 <!-- ROADMAP -->
