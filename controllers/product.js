@@ -34,7 +34,6 @@ const create = async (req, res) => {
 
 const destroyMany = async (req, res) => {
   const { ids } = req.body;
-  console.log({ids});
   try {
     const result = await Product.deleteMany({
       _id: {
@@ -71,7 +70,6 @@ const destroy = async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
-    console.log('--product--',product);
     return res.status(200).json(product || {});
   } catch(err) {
     return res.status(500).json(err);

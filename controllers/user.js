@@ -69,7 +69,6 @@ const update = async (req, res) => {
 const destroy = async (req, res) => {
   try {
     const result = await User.findByIdAndDelete(req.params.id)
-    console.log(result);
     return res.status(200).json('User deleted');
   } catch(err) {
     return res.status(500).json(err);
@@ -114,7 +113,7 @@ const getAllUsers = async (req, res) => {
     if (limit) {
       options.limit = limit;
     }
-    const result = await User.find({}, {}, options);
+    const result = await User.find({}, {password: 0}, options);
     return res.status(200).json(result);
   } catch(err) {
     return res.status(500).json(err);

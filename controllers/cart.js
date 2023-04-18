@@ -38,7 +38,6 @@ const update = async (req, res) => {
 const destroy = async (req, res) => {
   try {
     const result = await Cart.findByIdAndDelete(req.params.id)
-    console.log('--deleted --', result);
     return res.status(200).json(`Cart record deleted`);
   } catch(err) {
     return res.status(500).json(err);

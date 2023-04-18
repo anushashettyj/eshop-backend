@@ -6,8 +6,11 @@ Content-Type: application/json
 {
     "username": "admin",
     "email": "admin@test.com",
-    "password": "Test321#4",
-    "isAdmin": true
+    "name": "Anusha Shetty",
+    "password": "admin123",
+    "isAdmin": true,
+    "status": "active",
+    "gender": "female"
 }
 
 ###
@@ -17,7 +20,7 @@ Content-Type: application/json
 
 {
     "username": "admin",
-    "password": "Test321#4"
+    "password": "admin123"
 }
 
 ###

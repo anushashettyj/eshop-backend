@@ -7,7 +7,7 @@ const test = (req, res) => {
 }
 
 const register = async (req, res) => {
-  const { username, email, isAdmin } = req.body;
+  const { username, name, email, isAdmin, status, gender } = req.body;
   // generate random 10 char string (salt)
   const salt = await bcrypt.genSalt(10);
   // hash the password, it cannot be reversed back to plain text
@@ -15,9 +15,12 @@ const register = async (req, res) => {
   const password = await bcrypt.hash(req.body.password, salt);
   const newUser = new User({
     username,
+    name,
     email,
     password,
-    isAdmin
+    isAdmin,
+    status,
+    gender
   });
   try {
     const user = await User.findOne({$or: [{email: email},{username: username}]});
